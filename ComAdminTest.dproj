@@ -62,7 +62,7 @@
         <DCC_S>false</DCC_S>
         <DCC_F>false</DCC_F>
         <DCC_K>false</DCC_K>
-        <PostBuildEvent><![CDATA[copy $(PROJECTDIR)\uComAdmin.pas R:\Development\ComAdmin\ /Y
+        <PostBuildEvent><![CDATA[copy $(PROJECTDIR)\uComAdmin*.* R:\Development\ComAdmin\ /Y
 $(PostBuildEvent)]]></PostBuildEvent>
         <PostBuildEventCancelOnError>false</PostBuildEventCancelOnError>
     </PropertyGroup>
@@ -113,6 +113,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </DCCReference>
         <DCCReference Include="uComAdmin.pas"/>
         <None Include="uComAdminConst.inc"/>
+        <None Include="README.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -142,6 +143,12 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 <DeployFile LocalName="ComAdminTest.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>ComAdminTest.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="README.md" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -1068,7 +1075,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy $(PROJECTDIR)\uComAdmin.pas R:\Development\ComAdmin\ /Y</PostBuildEvent>
+        <PostBuildEvent>copy $(PROJECTDIR)\uComAdmin*.* R:\Development\ComAdmin\ /Y</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win64'">
@@ -1076,7 +1083,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy $(PROJECTDIR)\uComAdmin.pas R:\Development\ComAdmin\ /Y</PostBuildEvent>
+        <PostBuildEvent>copy $(PROJECTDIR)\uComAdmin*.* R:\Development\ComAdmin\ /Y</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
@@ -1084,7 +1091,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy $(PROJECTDIR)\uComAdmin.pas R:\Development\ComAdmin\ /Y</PostBuildEvent>
+        <PostBuildEvent>copy $(PROJECTDIR)\uComAdmin*.* R:\Development\ComAdmin\ /Y</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win64'">
@@ -1092,7 +1099,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy $(PROJECTDIR)\uComAdmin.pas R:\Development\ComAdmin\ /Y</PostBuildEvent>
+        <PostBuildEvent>copy $(PROJECTDIR)\uComAdmin*.* R:\Development\ComAdmin\ /Y</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>True</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
 </Project>

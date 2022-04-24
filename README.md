@@ -1,4 +1,4 @@
-# ComAdmin
+﻿# ComAdmin
 ![](https://tokei.rs/b1/github/DEV2DEV-DE/ComAdmin?category=code)
 ![](https://tokei.rs/b1/github/DEV2DEV-DE/ComAdmin?category=files)
 
@@ -7,6 +7,23 @@ Delphi wrapper for the COM+ administration for Windows
 Links to MS documentation:
 
 https://docs.microsoft.com/en-us/windows/win32/cossdk/com--administration-collections#collection-hierarchy
+
+## Usage
+```pascal
+var
+  ComCatalog: TComAdminCatalog;
+  i: Integer;
+begin
+  ComCatalog := TComAdminCatalog.Create('MyServerName', '*', nil, nil);
+  try
+    for i := 0 to ComCatalog.Applications.Count - 1 do
+      Memo1.Lines.Add(ComCatalog.Applications[i].Name);
+  finally
+    ComCatalog.Free;
+  end;
+end;
+```
+Just provide an empty string as the first parameter of the constructor if you want to access the catalog of the local computer.
 
 ## Class-Hierarchy:
 ```
@@ -38,10 +55,20 @@ https://docs.microsoft.com/en-us/windows/win32/cossdk/com--administration-collec
         ● Role
           ∞ Users (+/-) 
             ● User
+  ∞ ApplicationCluster (+/-)
+    ● Server
   ∞ Protocols (+/-)
     ● Protocol
   ∞ EventClasses (+/-)
     ● EventClass
+  ∞ InprocServers (-)
+    ● InprocServer
+  ∞ TransientSubscriptions (+/-)
+    ● TransientSubscription
+      ∞ Publishers (+/-)
+        ● Values
+      ∞ Subscribers (+/-)
+        ● Values
 ```
 \+ This collection supports an Add method
 

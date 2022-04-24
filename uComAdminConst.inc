@@ -1,25 +1,41 @@
 const
+  CATALOG_READ_APPLICATIONS: Boolean = True;
+  CATALOG_READ_APPLICATION_CLUSTERS: Boolean = True;
+  CATALOG_READ_COMPUTER: Boolean = True;
+  CATALOG_READ_EVENT_CLASSES: Boolean = True;
+  CATALOG_READ_INPROC_SERVERS: Boolean = False;
+  CATALOG_READ_PARTITIONS: Boolean = True;
+  CATALOG_READ_PROTOCOLS: Boolean = True;
+  CATALOG_READ_TRANSIENT_SUBSCRIPTIONS: Boolean = False;
+
   DEBUG_MESSAGE_ADD_ROLE_ERROR = '[COMAdmin] Could not append role ''%s'' to object ''%s''';
   DEBUG_MESSAGE_COPY_ERROR = '[COMAdmin] Copy library %s failed: %s';
   DEBUG_MESSAGE_COPY_LIBRARY = '[COMAdmin] Copy library %s';
+  DEBUG_MESSAGE_COPY_ROLE_PROPERTIES = '[COMAdmin] Error in TComAdminRole.CopyProperties: %s';
   DEBUG_MESSAGE_DELETE_ROLE = '[COMAdmin] Deleting role %s from application %s on server %s';
   DEBUG_MESSAGE_GET_PASSWORD = '[COMAdmin] Using password for identity ''%s''';
+  DEBUG_MESSAGE_INSTALL_COMPONENT = '[COMAdmin] Installing component ''%s'' from library ''%s''';
+  DEBUG_MESSAGE_READ_CATALOG = '[COMAdmin] Read catalog from server ''%s''';
   DEBUG_MESSAGE_SET_PROPERTY = '[COMAdmin] Setting property ''%s'' to value ''%s''';
   DEBUG_MESSAGE_SET_PROPERTY_ERROR = '[COMAdmin] Error setting property: %s';
   DEBUG_MESSAGE_START_SYNC = '[COMAdmin] Synchronizing servers from ''%s'' to ''%s''';
   DEBUG_MESSAGE_SYNC_APPLICATION = '[COMAdmin] Synchronizing COM-Application ''%s''';
   DEBUG_MESSAGE_SYNC_COMPLETED = '[COMAdmin] Synchronizing successfully completed';
   DEBUG_MESSAGE_SYNC_COMPONENT = '[COMAdmin] Synchronizing component ''%s''';
+  DEBUG_MESSAGE_SYNC_COMPUTER = '[COMAdmin] Synchronizing computer settings from ''%s'' to ''%s''';
   DEBUG_MESSAGE_SYNC_ROLE = '[COMAdmin] Synchronizing role ''%s''';
   DEBUG_MESSAGE_SYNC_USER = '[COMAdmin] Synchronizing user ''%s''';
+  DEBUG_MESSAGE_SYNC_SYSTEM_APPLICATION = '[COMAdmin] System application ''%s'' will not be synchronized';
 
   DEFAULT_APP_FILTER = '*';
 
   ERROR_APPLICATION_NOT_DOWN = 'Application could not be shut down';
   ERROR_COPY_LIBRARY = 'Library could not be copied to target server';
+  ERROR_EXTENDED_MESSAGE = 'ErrorCode: %s - MajorRef: %s - MinorRef: %s - Name: %s';
   ERROR_INVALID_LIBRARY_PATH = 'Invalid library path for server %s';
   ERROR_NOT_FOUND = 'Element %s could not be found in this collection';
   ERROR_OUT_OF_RANGE = 'Value of range';
+  ERROR_SAVE_CHANGES = 'Error in %s.TComAdminBaseList.SaveChanges: ';
   ERROR_UNKNOWN_PROTOCOL = 'Unknown DCOM protocol';
 
   // ==================================================================================
@@ -32,7 +48,10 @@ const
   COLLECTION_NAME_COMPONENTS = 'Components';
   COLLECTION_NAME_COMPUTER = 'LocalComputer';
   COLLECTION_NAME_DCOM_PROTOCOLS = 'DCOMProtocols';
+  COLLECTION_NAME_ERROR_INFO = 'ErrorInfo';
   COLLECTION_NAME_EVENT_CLASSES = 'EventClassesForIID';
+  COLLECTION_NAME_FILES_FOR_IMPORT = 'FilesForImport';
+  COLLECTION_NAME_INPROC_SERVERS = 'InprocServers';
   COLLECTION_NAME_INSTANCES = 'ApplicationInstances';
   COLLECTION_NAME_INTERFACE_ROLES = 'RolesForInterface';
   COLLECTION_NAME_INTERFACES = 'InterfacesForComponent';
@@ -40,7 +59,11 @@ const
   COLLECTION_NAME_METHODS = 'MethodsForInterface';
   COLLECTION_NAME_PARTITION_ROLES = 'RolesForPartition';
   COLLECTION_NAME_PARTITIONS = 'Partitions';
+  COLLECTION_NAME_RELATED_COLLECTIONS = 'RelatedCollectionInfo';
   COLLECTION_NAME_ROLES = 'Roles';
+  COLLECTION_NAME_TRANSIENT_SUBSCRIPTION = 'TransientSubscriptions';
+  COLLECTION_NAME_TRANSIENT_PUBLISHERS = 'TransientPublisherProperties';
+  COLLECTION_NAME_TRANSIENT_SUBSCRIBERS = 'TransientSubscriberProperties';
   COLLECTION_NAME_USERS = 'UsersInRole';
   COLLECTION_NAME_USERS_PARTITION = 'UsersInPartitionRole';
 
@@ -56,7 +79,9 @@ const
   PROPERTY_NAME_ALLOW_SUBSCRIBERS = 'AllowInprocSubscribers';
   PROPERTY_NAME_APPLICATION = 'Application';
   PROPERTY_NAME_APPLICATION_DIRECTORY = 'ApplicationDirectory';
+  PROPERTY_NAME_APPLICATION_FILE = 'ApplicationFileName';
   PROPERTY_NAME_APPLICATION_ID = 'ApplicationID';
+  PROPERTY_NAME_APPLICATION_Name = 'ApplicationName';
   PROPERTY_NAME_APPLICATION_PROXY = 'ApplicationProxy';
   PROPERTY_NAME_AUTH_CAPABILITY = 'AuthenticationCapability';
   PROPERTY_NAME_AUTHENTICATION = 'Authentication';
@@ -89,10 +114,14 @@ const
   PROPERTY_NAME_DUMP_EXCEPTION = 'DumpOnException';
   PROPERTY_NAME_DUMP_FAILFAST = 'DumpOnFailfast';
   PROPERTY_NAME_DUMP_PATH = 'DumpPath';
-  PROPERTY_NAME_ENABLED = 'IsEnabled';
+  PROPERTY_NAME_ENABLED = 'Enabled';
+  PROPERTY_NAME_ERROR_CODE = 'ErrorCode';
+  PROPERTY_NAME_EVENT_CLASS_PARTITION = 'EventClassPartitionID';
+  PROPERTY_NAME_EVENT_CLSID = 'EventCLSID';
   PROPERTY_NAME_EVENT_TRACKING = 'EventTrackingEnabled';
   PROPERTY_NAME_EVENTS_ENABLED = 'EventsEnabled';
   PROPERTY_NAME_EXCEPTION_CLASS = 'ExceptionClass';
+  PROPERTY_NAME_FILTER_CRITERIA = 'FilterCriteria';
   PROPERTY_NAME_FIRE_IN_PARALLEL = 'FireInParallel';
   PROPERTY_NAME_ID = 'ID';
   PROPERTY_NAME_IDENTITY = 'Identity';
@@ -101,7 +130,10 @@ const
   PROPERTY_NAME_IMPERSONATION = 'ImpersonationLevel';
   PROPERTY_NAME_INDEX = 'Index';
   PROPERTY_NAME_INIT_SERVER_APPLICATION = 'InitializeServerApplication';
+  PROPERTY_NAME_INPROC_SERVER32 = 'InprocServer32';
+  PROPERTY_NAME_INTERFACE_ID = 'InterfaceID';
   PROPERTY_NAME_INTERNET_PORTS = 'InternetPortsListed';
+  PROPERTY_NAME_IS_ENABLED = 'IsEnabled';
   PROPERTY_NAME_IS_EVENT_CLASS = 'IsEventClass';
   PROPERTY_NAME_IS_INSTALLED = 'IsInstalled';
   PROPERTY_NAME_IS_PRIVATE_COMPONENT = 'IsPrivateComponent';
@@ -110,8 +142,11 @@ const
   PROPERTY_NAME_KEY = 'Key';
   PROPERTY_NAME_LOAD_BALANCING = 'LoadBalancingSupported';
   PROPERTY_NAME_LOAD_BALANCING_ID = 'LoadBalancingCLSID';
+  PROPERTY_NAME_MAJOR_REF = 'MajorRef';
+  PROPERTY_NAME_MINOR_REF = 'MinorRef';
   PROPERTY_NAME_MAX_DUMPS = 'MaxDumpCount';
   PROPERTY_NAME_MAX_POOL_SIZE = 'MaxPoolSize';
+  PROPERTY_NAME_METHOD_NAME = 'MethodName';
   PROPERTY_NAME_MI_FILTER_CLSID = 'MultiInterfacePublisherFilterCLSID';
   PROPERTY_NAME_MIN_POOL_SIZE = 'MinPoolSize';
   PROPERTY_NAME_MUST_RUN_CLIENT_CONTEXT = 'MustRunInClientContext';
@@ -125,17 +160,20 @@ const
   PROPERTY_NAME_PARTITIONS_ENABLED = 'PartitionsEnabled';
   PROPERTY_NAME_PASSWORD = 'Password';
   PROPERTY_NAME_PAUSED = 'IsPaused';
+  PROPERTY_NAME_PER_USER = 'PerUser';
   PROPERTY_NAME_PORTS = 'Ports';
   PROPERTY_NAME_PROCESSID = 'ProcessID';
   PROPERTY_NAME_PROG_ID = 'ProgID';
   PROPERTY_NAME_PROTOCOL_CODE = 'ProtocolCode';
   PROPERTY_NAME_PROXY_RSN = 'ApplicationProxyRSN';
   PROPERTY_NAME_PROXY_SERVER_NAME = 'ApplicationProxyServerName';
+  PROPERTY_NAME_PUBLISHER_ID = 'PublisherID';
   PROPERTY_NAME_QC_AUTHENTICATE = 'QCAuthenticateMsgs';
   PROPERTY_NAME_QC_MAXTHREADS = 'QCListenerMaxThreads';
   PROPERTY_NAME_QUEUE_LISTENER = 'QueueListenerEnabled';
   PROPERTY_NAME_QUEUING_ENABLED = 'QueuingEnabled';
   PROPERTY_NAME_QUEUING_SUPPORTED = 'QueuingSupported';
+  PROPERTY_NAME_READONLY = 'ReadOnly';
   PROPERTY_NAME_RECYCLE_ACTIVATION = 'RecycleActivationLimit';
   PROPERTY_NAME_RECYCLE_CALL_LIMIT = 'RecycleCallLimit';
   PROPERTY_NAME_RECYCLE_EXPIRATION = 'RecycleExpirationTimeout';
@@ -158,7 +196,11 @@ const
   PROPERTY_NAME_SRP_ENABLED = 'SRPEnabled';
   PROPERTY_NAME_SRP_OBJECTS_CHECK = 'SRPRunningObjectChecks';
   PROPERTY_NAME_SRP_TRUSTLEVEL = 'SRPTrustLevel';
+  PROPERTY_NAME_SUBSCRIBER_INTERFACE = 'SubscriberInterface';
+  PROPERTY_NAME_SUBSCRIBER_PARTITION_ID = 'SubscriberPartitionID';
   PROPERTY_NAME_SYSTEM = 'IsSystem';
   PROPERTY_NAME_TRANSACTION_TIMEOUT = 'TransactionTimeout';
   PROPERTY_NAME_USER = 'User';
+  PROPERTY_NAME_USER_NAME = 'UserName';
+  PROPERTY_NAME_VALUE = 'Value';
 
